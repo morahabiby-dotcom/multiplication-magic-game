@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Multiplication Magic</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff6dc;--card:#fff;--ink:#2b2d42;--soft:#6b6f8a;--blue:#4361ee;--blue2:#dfe6ff;--orange:#ff7a59;--or2:#ffe3da;--green:#1fa97a;--gr2:#d6f5e8;--red:#e5484d;--rd2:#ffe0e1;--line:#e6dcc0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#1b1d33;--card:#27294a;--ink:#f4f2ff;--soft:#a9acd0;--blue:#8da2ff;--blue2:#34396b;--orange:#ff9272;--or2:#4a3040;--green:#4fd6a3;--gr2:#1f4a47;--red:#ff7b80;--rd2:#4d2a3a;--line:#3a3d66}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#1b1d33;--card:#27294a;--ink:#f4f2ff;--soft:#a9acd0;--blue:#8da2ff;--blue2:#34396b;--orange:#ff9272;--or2:#4a3040;--green:#4fd6a3;--gr2:#1f4a47;--red:#ff7b80;--rd2:#4d2a3a;--line:#3a3d66}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Fredoka","Trebuchet MS","Comic Sans MS",system-ui,sans-serif;font-size:19px;line-height:1.4;min-height:100vh}
+main{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:34px;margin:6px 0 2px;text-align:center}
+.sub{text-align:center;color:var(--soft);margin:0 0 14px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1}
+button{font:inherit;cursor:pointer;border:0;border-radius:18px;min-height:56px;padding:10px 18px;background:var(--blue2);color:var(--ink);font-weight:600;transition:transform .1s}
+button:active{transform:scale(.96)}
+button:focus-visible,input:focus-visible{outline:4px solid var(--orange);outline-offset:2px}
+.tabs button.on,.go{background:var(--blue);color:#fff}
+:root[data-theme="dark"] .tabs button.on,:root[data-theme="dark"] .go{color:#14163a}
+.card{background:var(--card);border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:0 3px 0 var(--line)}
+.lv{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);box-shadow:0 4px 0 var(--line);margin-bottom:14px;padding:14px 16px;min-height:88px}
+.lv .big{font-size:42px}.lv b{display:block;font-size:22px}.lv span{font-weight:400;color:var(--soft);font-size:17px}
+.stars{margin-left:auto;font-size:20px;white-space:nowrap}
+.bar{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.bar i{width:14px;height:14px;border-radius:50%;background:var(--line)}.bar i.d{background:var(--green)}.bar i.n{background:var(--blue)}
+.eq{font-size:44px;font-weight:700;text-align:center;margin:6px 0}
+.q{font-size:22px;text-align:center;margin:8px 0 14px;font-weight:600}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.opts button{font-size:28px;background:var(--blue2);min-height:72px}
+.opts button.ok{background:var(--green);color:#fff}
+.opts button.no{background:var(--rd2);color:var(--red);animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.say{text-align:center;font-size:21px;min-height:34px;margin:12px 0;font-weight:600}
+.say.g{color:var(--green)}.say.r{color:var(--red)}
+.grid{display:grid;gap:4px;justify-content:center;margin:8px auto}
+.grid i{width:16px;height:16px;border-radius:50%;background:var(--blue)}.grid i.o{background:var(--orange)}
+.row{display:flex;gap:10px}.row button{flex:1}
+.back{background:transparent;box-shadow:none;min-height:44px;padding:4px 8px;color:var(--soft)}
+.big-end{font-size:64px;text-align:center}
+/* worksheet */
+.ws h2{margin:6px 0 4px;font-size:24px}.ws p.h{margin:0 0 10px;color:var(--soft);font-size:17px}
+.ws .it{font-size:24px;padding:8px 0;border-top:2px dashed var(--line)}
+.ws input{width:74px;height:50px;font:inherit;font-size:24px;text-align:center;border:3px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);margin:0 3px}
+.ws input.ok{border-color:var(--green);background:var(--gr2)}.ws input.bad{border-color:var(--red);background:var(--rd2)}
+.nm{display:flex;gap:8px;align-items:center;margin-bottom:10px}.nm input{width:100%;text-align:left;font-size:22px}
+@media print{body{background:#fff;color:#000}.tabs,.noprint{display:none!important}.card{box-shadow:none;border:1px solid #999}.ws input{border-color:#000;background:#fff;color:#000}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<h1>✨ Multiplication Magic</h1>
+<p class="sub">Swap it, make 10, split it!</p>
+<div class="tabs" role="tablist"><button id="t1" class="on" onclick="tab(1)">🎮 Play</button><button id="t2" onclick="tab(2)">📝 Worksheet</button></div>
+<div id="app"></div>
+<div id="wsv" class="ws" hidden></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),rnd=n=>Math.floor(Math.random()*n);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const stars={},names=["Swap it!","Make 10 first!","Split the array!","Activity day!"];
+let L=0,qs=[],qi=0,si=0,miss=false,score=0,done=false;
+
+function nums(c){const s=new Set([c]);for(const x of shuffle([10,1,2,5,3,4])){if(s.size>=3)break;const v=rnd(2)?c+x:c-x;if(v>0)s.add(v)}let k=1;while(s.size<3)s.add(c+k++);return shuffle([...s]).map(String)}
+function arr(r,c,t){let h='<div class="grid" style="grid-template-columns:repeat('+c+',16px)" aria-label="array of '+r+' rows and '+c+' columns">';for(let i=0;i<r;i++)for(let j=0;j<c;j++)h+='<i class="'+(t&&i>=t?'o':'')+'"></i>';return h+'</div>'}
+
+function build(l){
+ if(l==0)return shuffle([[3,8],[4,6],[7,5],[9,2],[6,7],[4,9],[3,5],[8,6]]).slice(0,5).map(([a,b])=>({steps:[{v:'<div class="eq">'+a+' × '+b+'</div>'+arr(a,b),p:"Which fact is the same?",o:shuffle([b+" × "+a,a+" + "+b,a+" × "+a]),c:b+" × "+a,say:a+" × "+b+" = "+b+" × "+a+" = "+a*b+". We can swap the order!"}]}));
+ if(l==1)return shuffle([[2,7,5],[5,3,2],[7,2,5],[2,6,5],[4,2,5],[5,9,2]]).slice(0,5).map(s=>{
+  let i=0,j=1,k=2;[[0,1,2],[0,2,1],[1,2,0]].forEach(t=>{if(s[t[0]]*s[t[1]]==10){i=t[0];j=t[1];k=t[2]}});
+  const pr=[[0,1],[0,2],[1,2]].map(t=>s[t[0]]+" × "+s[t[1]]),R=s[k],tot=10*R;
+  return{steps:[{v:'<div class="eq">'+s.join(" × ")+'</div>',p:"Tap the two numbers that make 10!",o:pr,c:s[i]+" × "+s[j],say:"Yes! "+s[i]+" × "+s[j]+" = 10"},
+  {v:'<div class="eq">10 × '+R+'</div>',p:"Now solve it!",o:nums(tot),c:String(tot),say:s.join(" × ")+" = 10 × "+R+" = "+tot+" 🎉"}]}});
+ if(l==3)return shuffle([[12,"Swimming",5,18,"Dance",3],[18,"Swimming",5,12,"Dance",3],[11,"Tennis",4,19,"Swimming",5],[19,"Tennis",4,11,"Swimming",5],[14,"Art",5,16,"Gymnastics",4]]).map(([a,n1,p1,b,n2,p2])=>{const c1=a*p1,c2=b*p2,pl='<p class="q" style="margin:0 0 6px">🏊 Swimming $5 &nbsp; 🎾 Tennis $4 &nbsp; 💃 Dance $3 &nbsp; 🤸 Gymnastics $4 &nbsp; 🎨 Art $5</p>';
+  return{steps:[{v:pl+'<div class="eq">'+a+' × '+p1+'</div>',p:a+" learners choose "+n1+" ($"+p1+" each). Cost = ?",o:nums(c1),c:String(c1),say:"Tip: (10 × "+p1+") + ("+(a-10)+" × "+p1+") = "+c1},
+  {v:pl+'<div class="eq">'+b+' × '+p2+'</div>',p:b+" learners choose "+n2+" ($"+p2+" each). Cost = ?",o:nums(c2),c:String(c2),say:"Tip: (10 × "+p2+") + ("+(b-10)+" × "+p2+") = "+c2},
+  {v:pl+'<div class="eq">$'+c1+' + $'+c2+'</div>',p:"What is the total cost?",o:nums(c1+c2),c:String(c1+c2),say:"Total: $"+(c1+c2)+" 🎉"}]}});
+ return shuffle([[13,3],[14,3],[16,4],[15,2],[17,5],[12,4]]).slice(0,5).map(([a,b])=>{const r=a-10,p1=10*b,p2=r*b;
+  return{steps:[{v:'<div class="eq">'+a+' × '+b+'</div>'+arr(a,b,10),p:"Blue rows: 10 × "+b+" = ?",o:nums(p1),c:String(p1),say:"10 rows of "+b+" = "+p1},
+  {v:'<div class="eq">'+a+' × '+b+'</div>'+arr(a,b,10),p:"Orange rows: "+r+" × "+b+" = ?",o:nums(p2),c:String(p2),say:r+" rows of "+b+" = "+p2},
+  {v:'<div class="eq">'+p1+' + '+p2+'</div>',p:"Add the two parts!",o:nums(p1+p2),c:String(p1+p2),say:a+" × "+b+" = "+(p1+p2)+" 🎉"}]}});
+}
+
+function menu(){
+ const info=[["🔄","Change the order of a multiplication"],["🔟","Find the pair that makes 10"],["🧩","Split a big array into smaller ones"],["🎟️","Work out the cost of school activities"]];
+ $("#app").innerHTML='<p class="q">Pick a mission!</p>'+info.map((x,i)=>'<button class="lv" onclick="start('+i+')"><span class="big">'+x[0]+'</span><div><b>'+names[i]+'</b><span>'+x[1]+'</span></div><div class="stars">'+("⭐".repeat(stars[i]||0)||"")+'</div></button>').join("");
+}
+function start(l){L=l;qs=build(l);qi=0;score=0;show(0)}
+function show(s){
+ si=s;miss=s==0?false:miss;done=false;
+ const q=qs[qi],st=q.steps[s];
+ let bar='<div class="bar">'+qs.map((_,i)=>'<i class="'+(i<qi?'d':i==qi?'n':'')+'"></i>').join("")+'</div>';
+ $("#app").innerHTML='<button class="back" onclick="menu()">← Missions</button><div class="card">'+bar+st.v+'<div class="q">'+st.p+'</div><div class="opts">'+st.o.map(o=>'<button onclick="ans(this,\''+o+'\')">'+o+'</button>').join("")+'</div><div class="say" id="say" aria-live="polite"></div><button class="go" id="nx" style="width:100%" hidden onclick="next()">Next ➜</button></div>';
+}
+function ans(b,o){
+ if(done)return;const st=qs[qi].steps[si];
+ if(o==st.c){done=true;b.classList.add("ok");$("#say").className="say g";$("#say").textContent="⭐ "+st.say;document.querySelectorAll(".opts button").forEach(x=>x.disabled=true);$("#nx").hidden=false;$("#nx").focus()}
+ else{miss=true;b.classList.add("no");b.disabled=true;$("#say").className="say r";$("#say").textContent="Not quite. Try again! 💪"}
+}
+function next(){
+ const q=qs[qi];
+ if(si<q.steps.length-1)return show(si+1);
+ if(!miss)score++;qi++;
+ if(qi<qs.length)return show(0);
+ stars[L]=Math.max(stars[L]||0,score);
+ $("#app").innerHTML='<div class="card"><div class="big-end">'+(score>=4?"🏆":score>=2?"🌟":"💪")+'</div><div class="q">You got '+score+' of 5 stars!<br>'+("⭐".repeat(score))+'</div><div class="row"><button class="go" onclick="start('+L+')">Play again</button><button onclick="menu()">Missions</button></div></div>';
+}
+
+/* worksheet */
+const WS=[
+["🔄 Swap it!","Multiplication can go in any order. Fill the boxes.",[["4 × 3 = 12, so 3 × 4 = _",[12]],["6 × 7 = 42, so 7 × 6 = _",[42]],["9 × 4 = 36, so 4 × 9 = _",[36]],["8 × 3 = _, so 3 × 8 = _",[24,24]]]],
+["🔟 Make 10 first!","Move the numbers that make 10 to the front.",[["2 × 7 × 5 = 10 × 7 = _",[70]],["5 × 8 × 2 = 10 × 8 = _",[80]],["2 × 9 × 5 = 10 × 9 = _",[90]],["7 × 2 × 5 = _ × 7 = _",[10,70]]]],
+["🧩 Split the array!","Break the big number into 10 and some more.",[["14 × 3 = (10 × 3) + (4 × 3) = _ + _ = _",[30,12,42]],["16 × 5 = (10 × 5) + (6 × 5) = _ + _ = _",[50,30,80]],["19 × 2 = (10 × 2) + (9 × 2) = _ + _ = _",[20,18,38]],["13 × 4 = (10 × 4) + (3 × 4) = _ + _ = _",[40,12,52]]]],
+["🎟️ Activity day!","Swimming $5, Tennis $4, Dance $3, Gymnastics $4, Art $5. Split the big number into 10 and some more.",[["12 × 5 = (10 × 5) + (2 × 5) = _ + _ = _",[50,10,60]],["17 × 5 = (10 × 5) + (7 × 5) = _ + _ = _",[50,35,85]],["12 learners swim ($5) and 18 learners dance ($3). Swimming costs _, dance costs _, total = $_",[60,54,114]],["19 learners play tennis ($4) and 11 learners swim ($5). Tennis costs _, swimming costs _, total = $_",[76,55,131]]]]
+];
+function buildWS(){
+ let h='<div class="card"><div class="nm"><label for="nm">My name:</label><input id="nm" autocomplete="off"></div>';
+ WS.forEach((s,si)=>{h+='<h2>'+s[0]+'</h2><p class="h">'+s[1]+'</p>';s[2].forEach((q,qi)=>{let n=0;h+='<div class="it">'+q[0].replace(/_/g,()=>'<input inputmode="numeric" data-a="'+q[1][n++]+'" aria-label="answer">')+'</div>'})});
+ h+='<div class="row noprint" style="margin-top:16px"><button class="go" onclick="chk()">Check my answers ✅</button><button onclick="window.print()">🖨 Print</button></div><div class="say" id="ws-say" aria-live="polite"></div></div>';
+ $("#wsv").innerHTML=h;
+}
+function chk(){
+ const ins=[...document.querySelectorAll("#wsv input[data-a]")];let ok=0,tot=ins.length;
+ ins.forEach(i=>{const g=i.value.trim()===i.dataset.a;i.classList.toggle("ok",g);i.classList.toggle("bad",!g&&i.value.trim()!=="");if(g)ok++});
+ const e=$("#ws-say");e.className="say "+(ok==tot?"g":"");e.textContent=ok==tot?"🏆 Perfect! You did it!":"⭐ "+ok+" of "+tot+" correct. Fix the red boxes!";
+}
+function tab(n){$("#app").hidden=n!=1;$("#wsv").hidden=n!=2;$("#t1").classList.toggle("on",n==1);$("#t2").classList.toggle("on",n==2)}
+buildWS();menu();
+</script></body></html>
